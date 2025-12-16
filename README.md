@@ -50,11 +50,7 @@ Nilai TGM dihitung menggunakan rumus berbobot dan kemudian diagregasi menjadi **
 TGM dihitung menggunakan rumus berbobot berikut:
 
 ```
-TGM = 0.3 × RF  
-    + 0.3 × DRD  
-    + 0.3 × NR  
-    + 0.05 × IAF  
-    + 0.05 × DID
+TGM = 0.3 × RF + 0.3 × DRD + 0.3 × NR + 0.05 × IAF + 0.05 × DID
 ```
 
 Keterangan:
