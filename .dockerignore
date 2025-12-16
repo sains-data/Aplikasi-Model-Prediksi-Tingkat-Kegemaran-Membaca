@@ -1,6 +1,12 @@
-__pycache__
+__pycache__/
 *.pyc
-.git
+*.pyo
+*.pyd
+*.log
 .env
+.git
+.gitignore
+.vscode
+.idea
 models/
-data/
+reading.db
