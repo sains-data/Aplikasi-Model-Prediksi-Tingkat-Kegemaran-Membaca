@@ -1,6 +1,6 @@
 # Kelompok-6-MlOps-RB-2025
 
-# 📚 Prediksi Tingkat Gemar Membaca (TGM) 
+# 📚 Aplikasi Model Prediksi Tingkat Kegemaran Membaca (TGM) 
 
 ## Project Overview
 
