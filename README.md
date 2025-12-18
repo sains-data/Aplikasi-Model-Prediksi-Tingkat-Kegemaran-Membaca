@@ -205,6 +205,13 @@ Aplikasi-Model-Prediksi-Tingkat-Kegemaran-Membaca/
 
 ## Deployment
 
+## Cara Menjalankan dengan Git & Docker (PowerShell)
+
+### 1. Clone repository dari GitHub
+
+Buka PowerShell, lalu jalankan perintah berikut:
+
+```bash
 # Pindah ke folder kerja (boleh diganti sesuai kebutuhan)
 cd $HOME\Documents
 
@@ -213,7 +220,71 @@ git clone https://github.com/sains-data/Aplikasi-Model-Prediksi-Tingkat-Kegemara
 
 # Masuk ke folder project
 cd Aplikasi-Model-Prediksi-Tingkat-Kegemaran-Membaca
+```
 
+Pastikan di dalam folder ini sudah ada file `Dockerfile`, `app.py`, `requirements.txt`, dan folder `data/`.
+
+### 2. Build Docker image
+
+Masih di folder project yang sama, jalankan:
+
+```bash
+# Build image dengan nama tgm-app
+docker build -t tgm-app .
+```
+
+Perintah ini akan:
+* Menggunakan `python:3.11-slim` sebagai base image
+* Menginstall semua dependency dari `requirements.txt`
+* Menyalin seluruh kode aplikasi ke dalam image dan menyiapkan Streamlit untuk dijalankan
+
+### 3. Jalankan container
+
+Setelah build selesai tanpa error:
+
+```bash
+docker run -p 8501:8501 tgm-app
+```
+
+**Penjelasan singkat:**
+* `-p 8501:8501` memetakan port 8501 di container ke port 8501 di komputer kamu
+* Container otomatis menjalankan perintah `streamlit run app.py --server.port=8501 --server.address=0.0.0.0`
+
+### 4. Akses aplikasi di browser
+
+Buka browser dan kunjungi:
+
+```
+http://localhost:8501
+```
+
+Di halaman ini kamu bisa:
+* Melihat tren historis TGM nasional
+* Melihat evaluasi model (MAE/MAPE) vs baseline
+* Mengatur horizon prediksi dan menyimpan hasil ke database
+* Mengisi form input data user yang akan tersimpan di `reading.db`
+
+### 5. (Opsional) Menghentikan container
+
+Tekan `Ctrl + C` di PowerShell tempat container berjalan, atau cari container-nya lalu hentikan dengan:
+
+```bash
+docker ps        # melihat container yang sedang berjalan
+docker stop <CONTAINER_ID>
+```
+
+---
+
+## Troubleshooting
+
+Jika mengalami masalah:
+* Pastikan Docker Desktop sudah berjalan
+* Pastikan port 8501 tidak digunakan oleh aplikasi lain
+* Periksa log error saat build atau run container
+
+## Kontribusi
+
+Silakan buat issue atau pull request jika ingin berkontribusi pada project ini.
 
 ---
 
