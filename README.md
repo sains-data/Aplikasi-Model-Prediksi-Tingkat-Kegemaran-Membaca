@@ -193,6 +193,7 @@ Aplikasi-Model-Prediksi-Tingkat-Kegemaran-Membaca/
 │
 ├── data/               # Dataset historis
 ├── models/             # Model ARIMA tersimpan
+├── notebooks/          # Model Evaluasi 
 ├── .streamlit/         # Konfigurasi Streamlit
 ├── app.py              # Aplikasi utama
 ├── reading.db          # Database SQLite
