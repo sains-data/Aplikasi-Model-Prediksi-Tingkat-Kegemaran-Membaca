@@ -12,22 +12,58 @@ Pipeline ini dirancang sederhana namun representatif untuk studi kasus akademik 
 
 ---
 
-## Objectives
 
-Tujuan dari proyek ini adalah:
+## ML Canvas
 
+**Background**
+Tingkat Gemar Membaca (TGM) nasional perlu dimonitor untuk mendukung kebijakan peningkatan literasi di Indonesia, namun analisis masih banyak dilakukan secara manual dan belum terotomasi.
+Data survei kebiasaan membaca dan penggunaan internet per provinsi serta per tahun memungkinkan pembangunan sistem prediksi TGM nasional yang terukur dan berulang.
+
+**Value Proposition**
+Aplikasi ini memberikan dashboard interaktif yang menghitung TGM berbasis beberapa indikator kebiasaan membaca dan penggunaan internet, lalu memprediksi tren nasional ke depan.
+Stakeholder (peneliti, pemerintah, kampus) dapat melihat tren historis, melakukan simulasi input data baru, dan memanfaatkan hasil prediksi yang tersimpan di database untuk analisis lanjutan.
+
+**Objective**
+Membangun sistem MLOps end‑to‑end untuk memprediksi TGM nasional: mulai dari pengambilan data, pemrosesan, training model time series, hingga deployment dan monitoring hasil.
+Secara khusus, sistem harus mampu melakukan online inference melalui web app dan mendukung retrain otomatis saat data pengguna bertambah.
+
+**Solution**
+Solusi berupa aplikasi Streamlit yang membaca data survei dari file Excel, menghitung skor TGM per baris, mengagregasikan TGM nasional per tahun, lalu melatih model ARIMA untuk memprediksi beberapa tahun ke depan.
+Aplikasi dikemas dalam Docker container, menggunakan SQLite untuk menyimpan data input pengguna dan hasil prediksi, serta menyediakan antarmuka untuk melihat tren historis dan hasil forecast.
+
+**Data**
+Dataset utama berasal dari Kaggle yang berisi indikator literasi dan kebiasaan membaca masyarakat per provinsi dan per tahun. 
+Feature engineering dilakukan dengan menghitung skor TGM sebagai kombinasi berbobot dari fitur‑fitur tersebut, yang kemudian digunakan sebagai target untuk analisis tren dan peramalan.
+
+**Metrics**
+Metrik utama di aplikasi adalah nilai TGM rata‑rata nasional per tahun dan nilai prediksi TGM untuk tahun‑tahun berikutnya.
+Untuk evaluasi model, metrik error yang digunakan (atau direncanakan di notebook terpisah) adalah misalnya MAE/MAPE antara prediksi ARIMA dan data historis, serta perbandingan dengan baseline sederhana (naive atau moving average).
+
+**Evaluation**
+Model dievaluasi dengan membandingkan prediksi pada periode uji terhadap data TGM historis menggunakan metrik error dan visualisasi kurva tren historis vs prediksi.
+Kualitas sistem juga dievaluasi dari kemudahan deployment dengan Docker, kemampuan menyimpan data dan prediksi di SQLite, serta mekanisme retrain otomatis ketika data user mencapai ambang tertentu.
+
+**Modeling**
+Model utama yang digunakan adalah ARIMA (1,1,1) pada deret waktu TGM nasional per tahun, dengan opsi retrain ketika data historis dan data input pengguna digabung.
+Ke depan dapat ditambahkan model pembanding (naive, moving average, atau model time series lain) dan eksperimen tuning hyperparameter ARIMA untuk menurunkan error.
+
+**Inference (offline/online)**
+Inference online dilakukan langsung di aplikasi Streamlit: pengguna memilih horizon tahun ke depan, aplikasi menjalankan model ARIMA dan menampilkan grafik serta nilai prediksi.
+Inference offline dimungkinkan dengan memanfaatkan model .pkl yang tersimpan di folder models/ dan data yang tersimpan di SQLite untuk analisis atau pelatihan ulang di luar aplikasi.​
+
+**Tujuan dari proyek ini adalah:**
 * Menghitung nilai Tingkat Gemar Membaca (TGM) berdasarkan indikator membaca dan penggunaan internet.
 * Mengembangkan model time series forecasting untuk memprediksi TGM nasional.
 * Mengimplementasikan pipeline MLOps end-to-end berbasis aplikasi.
 * Menyimpan data dan hasil prediksi secara terstruktur menggunakan database.
 * Menerapkan konsep continuous training (retraining) berbasis data user.
-* Menyediakan aplikasi menggunakan Docker.
+* Menyediakan aplikasi yang dapat dijalankan secara portabel menggunakan Docker.
 
 ---
 
 ## Dataset Description
 
-Dataset utama berasal dari Kaggle yang berisi indikator literasi dan kebiasaan membaca masyarakat per provinsi dan per tahun.
+Dataset utama berasal dari Kaggle yang berisi indikator literasi dan kebiasaan membaca masyarakat per provinsi dan per tahun. 
 
 ### Fitur Utama:
 
