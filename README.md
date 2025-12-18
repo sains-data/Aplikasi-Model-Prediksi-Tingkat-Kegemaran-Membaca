@@ -205,13 +205,15 @@ Aplikasi-Model-Prediksi-Tingkat-Kegemaran-Membaca/
 
 ## Deployment
 
-Aplikasi dideploy sebagai aplikasi web menggunakan **Streamlit** dan dapat dijalankan di dalam **Docker container**.
+# Pindah ke folder kerja (boleh diganti sesuai kebutuhan)
+cd $HOME\Documents
 
-### Tahapan Singkat Deployment
+# Clone repository
+git clone https://github.com/sains-data/Aplikasi-Model-Prediksi-Tingkat-Kegemaran-Membaca.git
 
-1. Build Docker image
-2. Jalankan container
-3. Akses aplikasi melalui browser (port 8501)
+# Masuk ke folder project
+cd Aplikasi-Model-Prediksi-Tingkat-Kegemaran-Membaca
+
 
 ---
 
