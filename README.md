@@ -244,7 +244,10 @@ Perintah ini akan:
 Setelah build selesai tanpa error:
 
 ```bash
-docker run -p 8501:8501 tgm-app
+docker run -p 8501:8501 ^
+  --mount type=bind,source="%cd%\reading.db",target=/app/reading.db ^
+  tgm-app
+
 ```
 
 **Penjelasan singkat:**
