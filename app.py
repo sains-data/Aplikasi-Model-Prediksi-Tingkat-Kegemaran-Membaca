@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import streamlit as st
 from statsmodels.tsa.arima.model import ARIMA
 import joblib
+from sklearn.metrics import mean_absolute_error, mean_absolute_percentage_error
 
 # ======================
 # CONFIG (HARUS PALING ATAS UNTUK PERINTAH st.*)
@@ -213,6 +214,43 @@ else:
     ax.set_title("Tren Historis TGM Nasional")
     ax.grid(True, axis="y", alpha=0.3)
     st.pyplot(fig)
+
+# ======================
+# EVALUASI MODEL (TRAIN/TEST SPLIT)
+# ======================
+values = trend_df.values.astype(float)
+years = trend_df.index.values
+
+if len(values) >= 6:  # minimal titik data
+    split_idx = int(0.8 * len(values))
+    train_values = values[:split_idx]
+    test_values = values[split_idx:]
+    train_years = years[:split_idx]
+    test_years = years[split_idx:]
+
+    try:
+        eval_model = ARIMA(train_values, order=(1, 1, 1)).fit()
+        h = len(test_values)
+        arima_forecast = eval_model.forecast(steps=h)
+
+        naive_forecast_vals = np.repeat(train_values[-1], h)
+
+        arima_mae = mean_absolute_error(test_values, arima_forecast)
+        arima_mape = mean_absolute_percentage_error(test_values, arima_forecast)
+        naive_mae = mean_absolute_error(test_values, naive_forecast_vals)
+        naive_mape = mean_absolute_percentage_error(test_values, naive_forecast_vals)
+
+        st.subheader("📊 Evaluasi Model (Train/Test)")
+        col1, col2 = st.columns(2)
+        with col1:
+            st.metric("ARIMA MAE", f"{arima_mae:.2f}")
+            st.metric("ARIMA MAPE", f"{arima_mape * 100:.2f}%")
+        with col2:
+            st.metric("Naive MAE", f"{naive_mae:.2f}")
+            st.metric("Naive MAPE", f"{naive_mape * 100:.2f}%")
+
+    except Exception as e:
+        st.warning(f"Gagal menghitung evaluasi model: {e}")
 
 maybe_retrain_model_with_user_data(trend_df)
 
